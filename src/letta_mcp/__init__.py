@@ -1,0 +1,27 @@
+"""
+Letta MCP Server - Bridge Claude and Letta.ai agents with one line of code.
+"""
+
+__version__ = "1.0.0"
+__author__ = "SNYCFIRE-CORE"
+__email__ = "support@letta-mcp.dev"
+
+from .server import LettaMCPServer, create_server, run_server
+from .config import LettaConfig, load_config
+from .exceptions import LettaMCPError, ConfigurationError, APIError
+from .models import AgentInfo, MemoryBlock, ToolInfo, Message
+
+__all__ = [
+    "LettaMCPServer",
+    "create_server", 
+    "run_server",
+    "LettaConfig",
+    "load_config",
+    "LettaMCPError",
+    "ConfigurationError", 
+    "APIError",
+    "AgentInfo",
+    "MemoryBlock",
+    "ToolInfo",
+    "Message",
+]
