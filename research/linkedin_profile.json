@@ -1,0 +1,16 @@
+{
+  "error": "LinkedIn profile access blocked",
+  "attempted_url": "https://www.linkedin.com/in/zlieberman/",
+  "status": "LinkedIn no longer supported by Firecrawl",
+  "note": "Zack Lieberman connection to Letta.ai not confirmed through research",
+  "alternative_research": {
+    "findings": "No evidence found linking Zack Lieberman to Letta.ai through search engines",
+    "search_results": "Zack Lieberman is identified as an artist, educator, and creative coder based in NYC, known for experimental drawing and animation tools, openFrameworks contributions, and co-founding School for Poetic Computation",
+    "recommendation": "Need to clarify the connection between Zack Lieberman and Letta.ai or research the correct contact person"
+  },
+  "actual_letta_leadership": {
+    "ceo_cofounder": "Charles Packer",
+    "cto_cofounder": "Sarah Wooders",
+    "background": "Both are UC Berkeley PhD students from Sky Computing Lab"
+  }
+}
