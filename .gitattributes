@@ -1,0 +1,24 @@
+# Git attributes for setuptools-scm
+.git_archival.txt  export-subst
+
+# Python files
+*.py text eol=lf
+*.pyi text eol=lf
+
+# Configuration files
+*.toml text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.ini text eol=lf
+*.cfg text eol=lf
+
+# Documentation
+*.md text eol=lf
+*.rst text eol=lf
+*.txt text eol=lf
+
+# Binary files
+*.whl binary
+*.tar.gz binary
+*.zip binary
