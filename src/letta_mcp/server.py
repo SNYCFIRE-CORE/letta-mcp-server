@@ -38,7 +38,6 @@ class LettaMCPServer:
         # Initialize FastMCP server
         self.mcp = FastMCP(
             "Letta MCP Server",
-            version="1.0.0",
             instructions="""
 This server provides seamless integration between Claude and Letta.ai agents.
 
@@ -1104,6 +1103,7 @@ Remember: Letta agents maintain their own conversation history!
     
     def run(self, transport: str = "stdio"):
         """Run the MCP server"""
+        from ._version import __version__
         logger.info(f"Starting Letta MCP Server v{__version__}")
         logger.info(f"Connected to: {self.config.base_url}")
         logger.info(f"Transport: {transport}")

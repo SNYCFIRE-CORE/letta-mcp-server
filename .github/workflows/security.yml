@@ -1,0 +1,211 @@
+name: 🔒 Security Scanning
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run security scans weekly on Mondays at 3 AM UTC
+    - cron: '0 3 * * 1'
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+jobs:
+  dependency-security:
+    name: 🔍 Dependency Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install safety pip-audit
+
+      - name: 🛡️ Run Safety check
+        run: |
+          pip install -r requirements.txt || echo "No requirements.txt found, checking installed packages"
+          safety check --json --output safety-report.json || true
+          
+      - name: 🔍 Run pip-audit
+        run: |
+          pip-audit --format=json --output=pip-audit-report.json || true
+
+      - name: 📤 Upload security reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dependency-security-reports
+          path: |
+            safety-report.json
+            pip-audit-report.json
+
+  code-security:
+    name: 🛡️ Code Security Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 📦 Install bandit
+        run: |
+          python -m pip install --upgrade pip
+          pip install bandit[toml]
+
+      - name: 🕵️ Run Bandit security linter
+        run: |
+          bandit -r src/ -f json -o bandit-report.json -ll
+        continue-on-error: true
+
+      - name: 📤 Upload Bandit report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bandit-security-report
+          path: bandit-report.json
+
+  semgrep:
+    name: 🔬 Semgrep SAST
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔍 Run Semgrep
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: auto
+          generateSarif: "1"
+        env:
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+        continue-on-error: true
+
+      - name: 📤 Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: semgrep.sarif
+
+  codeql:
+    name: 🧬 CodeQL Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'python' ]
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-extended,security-and-quality
+
+      - name: 🏗️ Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: 🔍 Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{matrix.language}}"
+
+  secret-scan:
+    name: 🔐 Secret Scanning
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🕵️ Run TruffleHog
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --debug --only-verified
+
+  license-scan:
+    name: 📋 License Compliance
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 📦 Install pip-licenses
+        run: |
+          python -m pip install --upgrade pip
+          pip install pip-licenses
+
+      - name: 📋 Check licenses
+        run: |
+          pip install -e .
+          pip-licenses --format=json --output-file=licenses-report.json
+          pip-licenses --format=plain
+
+      - name: 📤 Upload license report
+        uses: actions/upload-artifact@v4
+        with:
+          name: license-report
+          path: licenses-report.json
+
+  security-summary:
+    name: 📊 Security Summary
+    needs: [dependency-security, code-security, semgrep, codeql, secret-scan, license-scan]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: 📥 Download all reports
+        uses: actions/download-artifact@v4
+        with:
+          path: security-reports
+
+      - name: 📊 Generate security summary
+        run: |
+          echo "## 🔒 Security Scan Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Scan Type | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Dependency Security | ${{ needs.dependency-security.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Code Security (Bandit) | ${{ needs.code-security.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| SAST (Semgrep) | ${{ needs.semgrep.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| CodeQL Analysis | ${{ needs.codeql.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Secret Scanning | ${{ needs.secret-scan.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| License Compliance | ${{ needs.license-scan.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📁 Security reports are available as workflow artifacts." >> $GITHUB_STEP_SUMMARY

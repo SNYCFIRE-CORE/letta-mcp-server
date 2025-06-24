@@ -1,0 +1,30 @@
+flowchart LR
+    Start([Start]) --> Check{Have Python<br/>3.9+?}
+    Check -->|No| Install["Install Python<br/>python.org"]
+    Install --> PIP
+    Check -->|Yes| PIP["pip install<br/>letta-mcp-server"]
+    
+    PIP --> Config{Configure<br/>Method?}
+    
+    Config -->|Automatic| Auto["letta-mcp configure<br/>(Recommended)"]
+    Config -->|Manual| Manual["Edit Claude<br/>Config JSON"]
+    
+    Auto --> InputKey["Enter API Key<br/>when prompted"]
+    Manual --> AddJSON["Add to<br/>mcpServers section"]
+    
+    InputKey --> Restart["Restart Claude"]
+    AddJSON --> Restart
+    
+    Restart --> Test["Test with<br/>🔧 letta_list_agents"]
+    Test --> Success([Ready to Use!<br/>⚡ 60 seconds total])
+    
+    %% Styling
+    classDef startEnd fill:#10b981,stroke:#059669,color:#fff,stroke-width:3px
+    classDef process fill:#2563eb,stroke:#1e40af,color:#fff,stroke-width:2px
+    classDef decision fill:#f59e0b,stroke:#d97706,color:#fff,stroke-width:2px
+    classDef highlight fill:#8b5cf6,stroke:#7c3aed,color:#fff,stroke-width:3px
+    
+    class Start,Success startEnd
+    class Install,PIP,Auto,Manual,InputKey,AddJSON,Restart,Test process
+    class Check,Config decision
+    class Auto highlight

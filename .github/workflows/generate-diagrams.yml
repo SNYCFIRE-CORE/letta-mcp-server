@@ -1,0 +1,72 @@
+name: Generate Diagrams
+
+on:
+  push:
+    paths:
+      - 'diagrams/src/*.mmd'
+      - 'mermaid-config.json'
+      - 'scripts/generate-diagrams.py'
+  pull_request:
+    paths:
+      - 'diagrams/src/*.mmd'
+      - 'mermaid-config.json'
+      - 'scripts/generate-diagrams.py'
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+    
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install Mermaid CLI
+      run: npm install -g @mermaid-js/mermaid-cli
+    
+    - name: Generate diagrams
+      run: |
+        cd ${{ github.workspace }}
+        python scripts/generate-diagrams.py
+    
+    - name: Check for changes
+      id: check_changes
+      run: |
+        if [[ -n $(git status --porcelain diagrams/output/) ]]; then
+          echo "changes=true" >> $GITHUB_OUTPUT
+        else
+          echo "changes=false" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Commit and push changes
+      if: steps.check_changes.outputs.changes == 'true' && github.event_name == 'push'
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add diagrams/output/
+        git commit -m "🎨 Auto-generate diagrams from source files"
+        git push
+    
+    - name: Comment on PR
+      if: steps.check_changes.outputs.changes == 'true' && github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '🎨 Diagrams have been regenerated based on your changes. Please review the updated diagrams in the `diagrams/output/` directory.'
+          })

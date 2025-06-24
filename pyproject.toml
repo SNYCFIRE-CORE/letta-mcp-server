@@ -1,13 +1,14 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
+requires = ["setuptools>=77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "letta-mcp-server"
-dynamic = ["version"]
-description = "Bridge Claude and Letta.ai agents with one line of code"
+version = "1.0.3"
+description = "The FIRST production-ready MCP server bridging Claude and Letta.ai agents"
 readme = "README.md"
-license = {text = "MIT"}
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [
     {name = "SNYCFIRE-CORE", email = "support@letta-mcp.dev"},
 ]
@@ -19,9 +20,7 @@ classifiers = [
     "Intended Audience :: Developers",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -39,7 +38,7 @@ keywords = [
     "fastmcp",
     "memgpt",
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
     "fastmcp>=0.2.0",
     "httpx>=0.27.0",
@@ -78,14 +77,14 @@ letta-mcp-server = "letta_mcp.server:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
-packages = ["letta_mcp"]
 
-[tool.setuptools.dynamic]
-version = {attr = "letta_mcp.__version__"}
+[tool.setuptools.packages.find]
+where = ["src"]
+
 
 [tool.black]
 line-length = 100
-target-version = ['py39', 'py310', 'py311', 'py312']
+target-version = ['py310', 'py311', 'py312']
 include = '\.pyi?$'
 extend-exclude = '''
 /(
@@ -103,7 +102,7 @@ extend-exclude = '''
 
 [tool.ruff]
 line-length = 100
-target-version = "py39"
+target-version = "py310"
 select = [
     "E",  # pycodestyle errors
     "W",  # pycodestyle warnings
@@ -120,7 +119,7 @@ ignore = [
 ]
 
 [tool.mypy]
-python_version = "3.9"
+python_version = "3.10"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true

@@ -1,0 +1,184 @@
+name: Production Release - Main Branch
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    name: "Security & Compliance"
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+        
+    - name: Advanced security scanning
+      run: |
+        # Multiple security tools for production
+        bandit -r src/ -f json -o bandit-report.json
+        safety check --json --output safety-report.json || true
+        pip-audit --format=json --output=audit-report.json || true
+        
+    - name: License compliance check
+      run: |
+        pip-licenses --format=json --output-file=licenses.json
+        
+    - name: Upload security artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: security-reports
+        path: |
+          bandit-report.json
+          safety-report.json
+          audit-report.json
+          licenses.json
+
+  comprehensive-testing:
+    runs-on: ubuntu-latest
+    name: "Comprehensive Testing"
+    needs: security-scan
+    
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+        
+    - name: Run full test suite
+      run: |
+        pytest tests/ -v --cov=src/letta_mcp --cov-report=xml --cov-report=term --cov-fail-under=85
+        
+    - name: Cross-platform compatibility test
+      run: |
+        python -c "import letta_mcp; print('✅ Import successful')"
+        letta-mcp --version
+        
+    - name: Performance benchmarks
+      run: |
+        python tests/performance/run_benchmarks.py --quick
+
+  build-and-publish:
+    runs-on: ubuntu-latest
+    name: "Build & Publish to PyPI"
+    needs: comprehensive-testing
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    environment:
+      name: pypi
+      url: https://pypi.org/p/letta-mcp-server
+      
+    permissions:
+      id-token: write  # For trusted publishing
+      contents: write  # For GitHub releases
+      
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip build twine
+        
+    - name: Build package
+      run: |
+        python -m build
+        
+    - name: Validate package
+      run: |
+        twine check dist/*
+        
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        attestations: true
+        
+    - name: Get version
+      id: version
+      run: |
+        VERSION=$(python -c "import src.letta_mcp; print(src.letta_mcp.__version__)")
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ steps.version.outputs.version }}
+        release_name: "Letta MCP Server v${{ steps.version.outputs.version }}"
+        body: |
+          ## 🚀 Release v${{ steps.version.outputs.version }}
+          
+          ### ✅ What's New
+          - Production-ready MCP server for Letta.ai integration
+          - 30+ MCP tools for complete Claude-Letta bridge
+          - Performance improvements and security enhancements
+          
+          ### 📦 Installation
+          ```bash
+          pip install letta-mcp-server==${{ steps.version.outputs.version }}
+          ```
+          
+          ### 🔗 Links
+          - [PyPI Package](https://pypi.org/project/letta-mcp-server/${{ steps.version.outputs.version }}/)
+          - [Documentation](https://github.com/SNYCFIRE-CORE/letta-mcp-server#readme)
+          - [Changelog](https://github.com/SNYCFIRE-CORE/letta-mcp-server/blob/main/CHANGELOG.md)
+          
+          ---
+          **Full Changelog**: https://github.com/SNYCFIRE-CORE/letta-mcp-server/compare/v${{ steps.previous-version }}...v${{ steps.version.outputs.version }}
+        draft: false
+        prerelease: false
+
+  post-release:
+    runs-on: ubuntu-latest
+    name: "Post-Release Notifications"
+    needs: build-and-publish
+    if: success()
+    
+    steps:
+    - name: Success notification
+      run: |
+        echo "🎉 Successfully released Letta MCP Server to PyPI!"
+        echo "📦 Package available at: https://pypi.org/project/letta-mcp-server/"
+        echo "🚀 GitHub release created"
+        echo "✅ All production checks passed"
+        
+    - name: Update package status
+      run: |
+        # Could integrate with monitoring/status pages here
+        echo "📊 Package status: PUBLISHED"
+        echo "🔄 Next: Community engagement and adoption tracking"

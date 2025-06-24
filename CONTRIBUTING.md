@@ -1,380 +1,321 @@
-# Contributing to Letta MCP Server
+# 🤝 Contributing to Letta MCP Server
 
-Thank you for your interest in contributing to the Letta MCP Server! This project represents the first production-ready bridge between Claude's MCP ecosystem and Letta's stateful agents, and we welcome contributions from the community.
+Thank you for your interest in contributing to the **first production-ready MCP server for Letta.ai**! This guide will help you understand our development workflow and contribution process.
 
-## 🎯 Project Vision
+## 🏗️ Development Workflow
 
-Our mission is to democratize access to stateful AI agents by providing seamless integration between Claude and Letta.ai. We believe that powerful AI capabilities should be accessible to all developers, not just those working with specific platforms.
+### Branching Strategy
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js 18+ or Python 3.8+
-- Claude Desktop or Claude Code installed
-- Basic understanding of MCP (Model Context Protocol)
-- Familiarity with REST APIs and async programming
-
-### Development Setup
-
-1. **Fork and Clone**
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/letta-mcp-server.git
-   cd letta-mcp-server
-   ```
-
-2. **Install Dependencies**
-   ```bash
-   npm install
-   # or for Python development
-   pip install -e ".[dev]"
-   ```
-
-3. **Environment Configuration**
-   ```bash
-   cp .env.example .env
-   # Add your Letta API key
-   LETTA_API_KEY=sk-let-your-key-here
-   ```
-
-4. **Run Tests**
-   ```bash
-   npm test
-   # or
-   pytest
-   ```
-
-5. **Start Development Server**
-   ```bash
-   npm run dev
-   # or
-   python -m letta_mcp.server
-   ```
-
-## 📋 How to Contribute
-
-### Types of Contributions We Welcome
-
-**🔧 Code Contributions**
-- Bug fixes and performance improvements
-- New MCP tool implementations
-- Enhanced error handling and logging
-- Documentation improvements
-- Test coverage expansion
-
-**📚 Documentation**
-- API documentation and examples
-- Troubleshooting guides
-- Use case tutorials
-- Integration guides for other platforms
-
-**🧪 Testing & Quality Assurance**
-- Manual testing across different environments
-- Automated test suite expansion
-- Performance benchmarking
-- Security vulnerability assessment
-
-**🎨 Community & Ecosystem**
-- Example applications and demos
-- Blog posts and tutorials
-- Conference presentations
-- Community support and mentoring
-
-### Contribution Process
-
-1. **Check Existing Issues**
-   - Browse our [issue tracker](https://github.com/SNYCFIRE-CORE/letta-mcp-server/issues)
-   - Look for issues labeled `good-first-issue` or `help-wanted`
-   - Comment on issues you'd like to work on
-
-2. **Create an Issue (if needed)**
-   - For bugs: Use the bug report template
-   - For features: Use the feature request template
-   - For questions: Use the discussion template
-
-3. **Fork and Create Branch**
-   ```bash
-   git checkout -b feature/your-feature-name
-   # or
-   git checkout -b fix/your-bug-fix
-   ```
-
-4. **Make Your Changes**
-   - Follow our coding standards (see below)
-   - Include tests for new functionality
-   - Update documentation as needed
-   - Ensure all tests pass
-
-5. **Submit Pull Request**
-   - Use our pull request template
-   - Provide clear description of changes
-   - Link to related issues
-   - Request review from maintainers
-
-## 🎨 Coding Standards
-
-### Code Style
-
-**TypeScript/JavaScript:**
-- Use Prettier for formatting (config provided)
-- Follow ESLint rules (config provided)
-- Use meaningful variable and function names
-- Prefer async/await over promises
-
-**Python:**
-- Follow PEP 8 style guidelines
-- Use Black for code formatting
-- Type hints required for public APIs
-- Docstrings for all public functions
-
-### API Design Principles
-
-1. **Consistency**: Follow established patterns in the codebase
-2. **Error Handling**: Provide meaningful error messages and proper HTTP status codes
-3. **Documentation**: All public APIs must be documented with examples
-4. **Testing**: New features require corresponding tests
-5. **Performance**: Consider memory usage and response times
-
-### Commit Message Format
+We use a **GitHub Flow + Release Branches** strategy for professional development:
 
 ```
-type(scope): short description
-
-Longer description if needed, explaining what changed and why.
-
-Fixes #123
+main (production)     ←─────────── release/v1.0.0 ←─── develop (integration)
+  ↓                                                        ↑
+PyPI Auto-Release                                    feature/xyz-branch
+  ↓                                                        ↑
+GitHub Release                                       PR from contributors
 ```
 
-**Types:**
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation changes
-- `test`: Test additions or modifications
-- `refactor`: Code refactoring
-- `perf`: Performance improvements
-- `chore`: Build process or auxiliary tool changes
+### Branch Descriptions
 
-### Example Commit Messages
+**🏭 `main` - Production Branch**
+- Always deployable, production-ready code
+- Protected: Requires PR reviews + all status checks
+- Auto-triggers: PyPI release, GitHub release, changelog
+- **No direct commits allowed**
 
-```
-feat(api): add streaming support for agent conversations
+**🔧 `develop` - Integration Branch**
+- Active development, where PRs get merged first
+- Continuous integration testing
+- Staging deployments for validation
+- **Primary target for contributor PRs**
 
-Implement Server-Sent Events (SSE) for real-time conversation streaming.
-This enables more responsive user experiences in Claude when interacting
-with Letta agents.
+**🚀 `release/vX.Y.Z` - Release Preparation**
+- Created from develop for final testing
+- Version bumping, changelog finalization
+- Release candidate testing
+- Merges to main when ready
 
-Fixes #45
-```
+**⚡ `hotfix/xyz` - Emergency Fixes**
+- Branches from main for critical issues
+- Merges back to both main and develop
+- Immediate PyPI releases
 
-```
-fix(auth): handle expired API keys gracefully
+## 🚀 Quick Start for Contributors
 
-Previously, expired Letta API keys would cause server crashes. Now we
-catch authentication errors and return proper HTTP 401 responses with
-helpful error messages.
-
-Fixes #67
-```
-
-## 🧪 Testing Guidelines
-
-### Test Categories
-
-**Unit Tests**
-- Individual function and method testing
-- Mock external dependencies
-- Fast execution (< 100ms per test)
-- High coverage requirements (>90%)
-
-**Integration Tests**
-- End-to-end MCP tool functionality
-- Real Letta API interactions (test environment)
-- Claude MCP client integration
-- Network and timeout handling
-
-**Performance Tests**
-- Response time benchmarks
-- Memory usage profiling
-- Concurrent request handling
-- Rate limit compliance
-
-### Test Requirements
-
-- All new features must include tests
-- Bug fixes must include regression tests
-- Tests should be deterministic and reliable
-- Use descriptive test names explaining the scenario
-
-### Running Tests
-
+### 1. Fork & Clone
 ```bash
-# Run all tests
-npm test
-
-# Run specific test file
-npm test -- tests/agent-management.test.js
-
-# Run with coverage
-npm run test:coverage
-
-# Run integration tests
-npm run test:integration
+# Fork the repository on GitHub, then:
+git clone https://github.com/YOUR-USERNAME/letta-mcp-server.git
+cd letta-mcp-server
+git remote add upstream https://github.com/SNYCFIRE-CORE/letta-mcp-server.git
 ```
 
-## 📖 Documentation Standards
-
-### Code Documentation
-
-**Functions and Methods:**
-```typescript
-/**
- * Creates a new Letta agent with specified configuration
- * @param config - Agent configuration object
- * @param config.name - Unique name for the agent
- * @param config.persona - Agent personality description
- * @param config.tools - Array of tool names to attach
- * @returns Promise resolving to agent object
- * @throws {LettaAPIError} When API request fails
- * @example
- * ```typescript
- * const agent = await createAgent({
- *   name: "sales-assistant",
- *   persona: "Helpful automotive sales expert",
- *   tools: ["web_search", "calculator"]
- * });
- * ```
- */
-```
-
-**API Endpoints:**
-```markdown
-### Create Agent
-
-Creates a new stateful agent in Letta.
-
-**Endpoint:** `POST /agents`
-
-**Parameters:**
-- `name` (string, required): Unique agent name
-- `persona` (string, optional): Personality description
-- `tools` (array, optional): Tool names to attach
-
-**Response:**
-```json
-{
-  "id": "agent-123",
-  "name": "sales-assistant",
-  "created_at": "2025-06-21T10:00:00Z"
-}
-```
-
-**Example:**
+### 2. Set Up Development Environment
 ```bash
-curl -X POST http://localhost:3000/mcp/agents \
-  -H "Content-Type: application/json" \
-  -d '{"name": "sales-assistant", "persona": "Helpful expert"}'
-```
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\\Scripts\\activate
+
+# Install in development mode
+pip install -e ".[dev]"
+
+# Install pre-commit hooks
+pre-commit install
 ```
 
-### README and Guides
+### 3. Create Feature Branch
+```bash
+# Always branch from develop
+git checkout develop
+git pull upstream develop
+git checkout -b feature/your-feature-name
+```
 
-- Use clear, concise language
-- Include working code examples
-- Provide context and motivation
-- Link to related documentation
-- Keep examples up-to-date
+### 4. Make Changes & Test
+```bash
+# Run tests locally
+pytest tests/ -v
+
+# Run quality checks
+black src/ tests/
+ruff check src/ tests/
+mypy src/letta_mcp/
+
+# Test installation
+pip install -e .
+letta-mcp --help
+```
+
+### 5. Submit Pull Request
+- Push your branch to your fork
+- Create PR targeting `develop` branch
+- Fill out the PR template completely
+- Ensure all CI checks pass
+
+## 📋 Contribution Types
+
+### 🐛 Bug Fixes
+- Target: `develop` branch
+- Requirements: Test case demonstrating the bug
+- Include: Clear reproduction steps
+
+### ✨ New Features
+- Target: `develop` branch
+- Requirements: Feature proposal discussion first
+- Include: Tests, documentation, examples
+
+### 📖 Documentation
+- Target: `develop` branch
+- Include: Spelling/grammar check
+- Test: Verify all links work
+
+### 🧪 Tests
+- Target: `develop` branch
+- Focus: Increase coverage, edge cases
+- Include: Performance impact assessment
+
+### 🎨 Examples
+- Target: `develop` branch
+- Requirements: Working, tested examples
+- Include: Clear documentation
+
+## ✅ Quality Standards
+
+### Code Quality Requirements
+
+**✅ All PRs Must Pass:**
+- [ ] **Code formatting**: `black` and `ruff` checks
+- [ ] **Type checking**: `mypy` validation
+- [ ] **Security scanning**: `bandit` security analysis
+- [ ] **Test coverage**: 85%+ coverage maintained
+- [ ] **Documentation**: All public APIs documented
+- [ ] **Examples**: Working code examples where applicable
+
+### Testing Requirements
+
+**✅ Test Categories:**
+- **Unit Tests**: Fast, isolated, mocked dependencies
+- **Integration Tests**: Real API interactions (where safe)
+- **Performance Tests**: Benchmark critical operations
+- **Cross-platform**: Windows, macOS, Linux compatibility
+
+### Documentation Standards
+
+**✅ Documentation Must Include:**
+- Clear, concise explanations
+- Working code examples
+- Installation/setup instructions
+- Troubleshooting common issues
+- API reference completeness
+
+## 🔄 Development Process
+
+### Step 1: Planning
+- Check existing issues for similar work
+- Create issue for significant changes
+- Discuss approach with maintainers
+- Get approval before starting large features
+
+### Step 2: Implementation
+- Write tests first (TDD encouraged)
+- Implement feature with clean, documented code
+- Follow existing code patterns and style
+- Add examples demonstrating usage
+
+### Step 3: Validation
+- Run full test suite locally
+- Verify cross-platform compatibility
+- Test installation from clean environment
+- Validate documentation accuracy
+
+### Step 4: Review Process
+- Create PR with detailed description
+- Respond to review feedback promptly
+- Update tests/docs based on feedback
+- Ensure CI passes completely
+
+## 🛡️ Security Considerations
+
+### Security-First Development
+- **API Keys**: Never commit API keys or secrets
+- **Dependencies**: Keep dependencies updated
+- **Validation**: Validate all inputs thoroughly
+- **Transport**: Use HTTPS/TLS for all communications
+
+### Reporting Security Issues
+- **Email**: security@snycfire.com
+- **Do NOT** create public GitHub issues
+- **Include**: Detailed reproduction steps
+- **Response**: We'll respond within 24 hours
+
+## 🎯 Performance Guidelines
+
+### Performance Standards
+- **Response Times**: < 2s for typical operations
+- **Memory Usage**: Efficient connection pooling
+- **Concurrency**: Thread-safe implementations
+- **Caching**: Intelligent caching strategies
+
+### Benchmarking
+- Run performance tests before submitting
+- Document any performance impacts
+- Include benchmark results in PR description
+- Test with realistic workloads
+
+## 📊 Release Process
+
+### How Releases Work
+1. **Development**: Features merged to `develop`
+2. **Release Preparation**: Create `release/vX.Y.Z` from `develop`
+3. **Final Testing**: Comprehensive validation on release branch
+4. **Production Release**: Merge release branch to `main`
+5. **Automated Publishing**: GitHub Actions handles PyPI + releases
+
+### Version Strategy
+- **Semantic Versioning**: MAJOR.MINOR.PATCH
+- **Conventional Commits**: Used for automated changelog
+- **Release Notes**: Auto-generated from commit history
+
+### Technical Diagrams
+
+We use Mermaid for all technical diagrams to ensure consistency and maintainability.
+
+**Creating/Updating Diagrams:**
+
+1. **Edit Source Files**: Modify `.mmd` files in `diagrams/src/`
+   ```mermaid
+   flowchart LR
+       A[Start] --> B{Decision}
+       B -->|Yes| C[Success]
+       B -->|No| D[Try Again]
+   ```
+
+2. **Follow Style Guide**:
+   - Primary color: `#2563eb` (Claude/MCP elements)
+   - Secondary color: `#10b981` (Letta.ai elements)
+   - Accent color: `#f59e0b` (highlights/performance)
+   - Error color: `#ef4444` (error states)
+
+3. **Generate Output Files**:
+   ```bash
+   cd letta-mcp-server-enhanced
+   python scripts/generate-diagrams.py
+   ```
+
+4. **Verify Output**:
+   - Check SVG files render correctly
+   - Ensure PNG files are high-quality (2x DPI)
+   - Keep file sizes under 500KB
+
+5. **Update Documentation**:
+   - Add new diagrams to `docs/diagrams.md`
+   - Update README with diagram references
+   - Include alt text for accessibility
+
+**Diagram Types We Use:**
+- **Flowcharts**: Installation flows, process diagrams
+- **Sequence Diagrams**: API interactions, memory operations
+- **State Diagrams**: Error handling, state machines
+- **Mind Maps**: Tool catalogs, feature overviews
+- **Architecture Diagrams**: System components, data flow
+
+**Best Practices:**
+- Keep diagrams focused on a single concept
+- Use clear, concise labels
+- Test on both light and dark backgrounds
+- Consider mobile device rendering
+- Always commit both source (.mmd) and output files
 
 ## 🤝 Community Guidelines
 
 ### Code of Conduct
-
-We are committed to providing a welcoming and inclusive environment for all contributors. Please read our [Code of Conduct](CODE_OF_CONDUCT.md) and help us maintain a positive community.
+- Be respectful and inclusive
+- Provide constructive feedback
+- Help newcomers learn and contribute
+- Focus on technical merit in discussions
 
 ### Communication Channels
+- **GitHub Issues**: Bug reports, feature requests
+- **GitHub Discussions**: Questions, ideas, showcase
+- **Discord**: Real-time community chat
+- **Email**: Private/security communications
 
-- **GitHub Issues**: Bug reports, feature requests, technical discussions
-- **GitHub Discussions**: General questions, ideas, community chat
-- **Discord**: Real-time collaboration and support (link in README)
-- **Email**: Security vulnerabilities and private matters
+### Recognition
+- All contributors credited in releases
+- Significant contributions highlighted
+- Community recognition for helpful members
+- Open source badges for profiles
+
+## 📚 Resources
+
+### Documentation
+- [Letta.ai Documentation](https://docs.letta.com)
+- [MCP Specification](https://modelcontextprotocol.io)
+- [FastMCP Documentation](https://github.com/jlowin/fastmcp)
+- [Python Packaging Guide](https://packaging.python.org)
+
+### Development Tools
+- **IDE Setup**: VSCode with Python extension recommended
+- **Testing**: pytest with coverage reporting
+- **Linting**: ruff for fast Python linting
+- **Formatting**: black for consistent code style
+- **Type Checking**: mypy for static analysis
 
 ### Getting Help
-
-**For Development Questions:**
-1. Check existing documentation and issues
-2. Search GitHub discussions
-3. Ask in Discord #development channel
-4. Create a GitHub discussion
-
-**For Bug Reports:**
-1. Use the bug report template
-2. Provide minimal reproduction case
-3. Include environment details
-4. Check if issue already exists
-
-**For Feature Requests:**
-1. Use the feature request template
-2. Explain the use case and motivation
-3. Consider implementation complexity
-4. Be open to alternative solutions
-
-## 🏆 Recognition
-
-We believe in recognizing contributions to our community:
-
-- **Contributors**: Listed in README and release notes
-- **Major Features**: Highlighted in blog posts and social media
-- **Community Leaders**: Invited to maintainer roles
-- **Conference Speakers**: Support for presenting project work
-
-### Contributor Levels
-
-**Community Member**
-- Occasional contributions
-- Participates in discussions
-- Helps other users
-
-**Regular Contributor**
-- Consistent contributions over time
-- Mentors new contributors
-- Helps with issue triage
-
-**Core Contributor**
-- Significant feature contributions
-- Reviews pull requests
-- Shapes project direction
-
-**Maintainer**
-- Commit access to repository
-- Release management
-- Project governance participation
-
-## 🔒 Security
-
-If you discover a security vulnerability, please do not open a public issue. Instead:
-
-1. Email us at security@snycfire.com
-2. Provide detailed description of the vulnerability
-3. Include steps to reproduce (if possible)
-4. Allow time for us to address the issue before public disclosure
-
-We follow responsible disclosure practices and will acknowledge your contribution once the issue is resolved.
-
-## 📝 License
-
-By contributing to this project, you agree that your contributions will be licensed under the [MIT License](LICENSE).
-
-## ❓ Questions?
-
-Still have questions? We're here to help:
-
-- **Documentation**: Check our [docs folder](docs/)
-- **Examples**: Browse [examples folder](examples/)
-- **Discussions**: GitHub Discussions tab
-- **Discord**: Real-time chat with the community
-- **Email**: contribute@snycfire.com
-
-Thank you for contributing to the future of AI agent development! Together, we're making stateful agents accessible to developers everywhere.
+- Check existing issues and documentation first
+- Ask questions in GitHub Discussions
+- Join our Discord community
+- Reach out to maintainers for complex issues
 
 ---
 
-*This project is proudly open source and community-driven. Every contribution, no matter how small, makes a difference.*
+## 🎉 Thank You!
+
+Your contributions help make the Letta MCP Server the best tool for connecting Claude and Letta.ai. Every contribution, no matter how small, makes a difference in the AI development community.
+
+**Happy coding!** 🚀
+
+---
+
+*Last updated: June 2025*
