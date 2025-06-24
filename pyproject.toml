@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "letta-mcp-server"
-version = "1.0.2"
+version = "1.0.3"
 description = "The FIRST production-ready MCP server bridging Claude and Letta.ai agents"
 readme = "README.md"
 license = "MIT"
