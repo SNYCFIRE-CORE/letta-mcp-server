@@ -1,0 +1,295 @@
+name: 🤝 Community Health
+
+on:
+  schedule:
+    # Run every Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+  issues:
+    types: [opened, labeled]
+  pull_request:
+    types: [opened, labeled]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  issue-triage:
+    name: 🏷️ Issue Triage
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' && github.event.action == 'opened'
+    
+    steps:
+      - name: 🤖 Auto-label issues
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const title = issue.title.toLowerCase();
+            const body = issue.body.toLowerCase();
+            const labels = [];
+            
+            // Auto-label based on title prefixes
+            if (title.includes('[bug]')) labels.push('bug');
+            if (title.includes('[feature]')) labels.push('feature');
+            if (title.includes('[question]')) labels.push('question');
+            if (title.includes('[docs]')) labels.push('documentation');
+            if (title.includes('[enhancement]')) labels.push('enhancement');
+            
+            // Auto-label based on content
+            if (body.includes('letta') || body.includes('agent')) labels.push('letta-related');
+            if (body.includes('claude') || body.includes('mcp')) labels.push('claude-related');
+            if (body.includes('api') || body.includes('endpoint')) labels.push('api');
+            if (body.includes('install') || body.includes('setup')) labels.push('installation');
+            if (body.includes('performance') || body.includes('slow')) labels.push('performance');
+            if (body.includes('security') || body.includes('vulnerability')) labels.push('security');
+            
+            // Determine priority
+            if (body.includes('critical') || body.includes('urgent')) labels.push('priority-high');
+            else if (body.includes('blocking') || body.includes('important')) labels.push('priority-medium');
+            else labels.push('priority-low');
+            
+            // Add good-first-issue label for simple issues
+            if (body.includes('typo') || body.includes('documentation') || title.includes('readme')) {
+              labels.push('good-first-issue');
+            }
+            
+            if (labels.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: labels
+              });
+            }
+
+      - name: 👋 Welcome new contributors
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const author = issue.user.login;
+            
+            // Check if this is the user's first issue
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              creator: author,
+              state: 'all'
+            });
+            
+            if (issues.data.length === 1) {
+              const welcomeMessage = `👋 Welcome to the Letta MCP Server community, @${author}! 
+              
+              Thank you for opening your first issue. We appreciate your contribution to making this project better.
+              
+              A maintainer will review your issue soon. In the meantime:
+              - 📚 Check our [documentation](https://github.com/SNYCFIRE-CORE/letta-mcp-server/blob/main/README.md)
+              - 💬 Join our [discussions](https://github.com/SNYCFIRE-CORE/letta-mcp-server/discussions)
+              - 🤝 See our [contributing guide](https://github.com/SNYCFIRE-CORE/letta-mcp-server/blob/main/CONTRIBUTING.md)
+              
+              We're excited to have you here! 🚀`;
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: welcomeMessage
+              });
+            }
+
+  pr-triage:
+    name: 🔄 PR Triage
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action == 'opened'
+    
+    steps:
+      - name: 🤖 Auto-label PRs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const title = pr.title.toLowerCase();
+            const labels = [];
+            
+            // Auto-label based on title prefixes
+            if (title.includes('[bug]') || title.includes('fix')) labels.push('bug-fix');
+            if (title.includes('[feature]') || title.includes('feat')) labels.push('feature');
+            if (title.includes('[docs]') || title.includes('doc')) labels.push('documentation');
+            if (title.includes('[test]') || title.includes('test')) labels.push('tests');
+            if (title.includes('[ci]') || title.includes('ci')) labels.push('ci-cd');
+            if (title.includes('[deps]') || title.includes('dep')) labels.push('dependencies');
+            
+            // Size labels based on changes
+            const additions = pr.additions;
+            const deletions = pr.deletions;
+            const totalChanges = additions + deletions;
+            
+            if (totalChanges < 10) labels.push('size-xs');
+            else if (totalChanges < 30) labels.push('size-s');
+            else if (totalChanges < 100) labels.push('size-m');
+            else if (totalChanges < 500) labels.push('size-l');
+            else labels.push('size-xl');
+            
+            if (labels.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                labels: labels
+              });
+            }
+
+      - name: 👋 Welcome new contributors
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const author = pr.user.login;
+            
+            // Check if this is the user's first PR
+            const prs = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'all'
+            });
+            
+            const authorPRs = prs.data.filter(p => p.user.login === author);
+            
+            if (authorPRs.length === 1) {
+              const welcomeMessage = `🎉 Thank you for your first contribution to Letta MCP Server, @${author}!
+              
+              Your pull request will be reviewed by a maintainer soon. Here's what happens next:
+              
+              1. ✅ Automated checks will run (tests, linting, security scans)
+              2. 👀 A maintainer will review your code
+              3. 💬 We may ask for changes or clarifications
+              4. 🚀 Once approved, your PR will be merged!
+              
+              **Tips for a smooth review:**
+              - Make sure all CI checks pass
+              - Address any feedback promptly
+              - Keep your PR focused and small
+              
+              Thank you for helping make this project better! 🙏`;
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: welcomeMessage
+              });
+            }
+
+  stale-check:
+    name: 🕰️ Stale Issue Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    
+    steps:
+      - name: 🕰️ Mark stale issues and PRs
+        uses: actions/stale@v9
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          stale-issue-message: |
+            This issue has been automatically marked as stale because it has not had recent activity. 
+            
+            **It will be closed in 7 days if no further activity occurs.**
+            
+            If you believe this issue is still relevant, please:
+            - Add a comment explaining why this is still important
+            - Provide additional context or information
+            - Reference any related work or dependencies
+            
+            Thank you for your contributions! 🙏
+          stale-pr-message: |
+            This pull request has been automatically marked as stale because it has not had recent activity.
+            
+            **It will be closed in 7 days if no further activity occurs.**
+            
+            If you're still working on this:
+            - Push new commits to update the PR
+            - Add a comment explaining the current status
+            - Request a review if you're ready
+            
+            Thank you for your contribution! 🙏
+          close-issue-message: |
+            This issue was automatically closed due to inactivity.
+            
+            If you believe this was closed in error, please reopen it with additional context.
+          close-pr-message: |
+            This pull request was automatically closed due to inactivity.
+            
+            If you'd like to continue this work, please reopen the PR or create a new one.
+          days-before-stale: 30
+          days-before-close: 7
+          exempt-issue-labels: 'pinned,security,priority-high'
+          exempt-pr-labels: 'pinned,security,priority-high'
+          stale-issue-label: 'stale'
+          stale-pr-label: 'stale'
+
+  community-metrics:
+    name: 📊 Community Metrics
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    
+    steps:
+      - name: 📊 Generate community report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const now = new Date();
+            const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+            
+            // Get recent issues
+            const recentIssues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'all',
+              since: oneWeekAgo.toISOString()
+            });
+            
+            // Get recent PRs
+            const recentPRs = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'all'
+            });
+            
+            const recentPRsFiltered = recentPRs.data.filter(pr => 
+              new Date(pr.created_at) >= oneWeekAgo
+            );
+            
+            // Get contributors
+            const contributors = await github.rest.repos.listContributors({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            
+            const report = `## 📊 Weekly Community Report
+            
+            ### 📈 Activity This Week
+            - 🆕 **New Issues**: ${recentIssues.data.filter(i => !i.pull_request).length}
+            - 🔄 **New Pull Requests**: ${recentPRsFiltered.length}
+            - 👥 **Total Contributors**: ${contributors.data.length}
+            
+            ### 🏷️ Issue Breakdown
+            - 🐛 **Bugs**: ${recentIssues.data.filter(i => i.labels.some(l => l.name === 'bug')).length}
+            - ✨ **Features**: ${recentIssues.data.filter(i => i.labels.some(l => l.name === 'feature')).length}
+            - ❓ **Questions**: ${recentIssues.data.filter(i => i.labels.some(l => l.name === 'question')).length}
+            - 📚 **Documentation**: ${recentIssues.data.filter(i => i.labels.some(l => l.name === 'documentation')).length}
+            
+            ### 🎯 Community Health
+            - 📅 **Report Date**: ${now.toISOString().split('T')[0]}
+            - ⭐ **Stars**: ${context.payload.repository?.stargazers_count || 'N/A'}
+            - 🍴 **Forks**: ${context.payload.repository?.forks_count || 'N/A'}
+            - 👀 **Watchers**: ${context.payload.repository?.watchers_count || 'N/A'}
+            
+            Generated automatically by Community Health workflow 🤖`;
+            
+            console.log(report);
+            
+            // Add to step summary
+            core.summary.addRaw(report).write();
