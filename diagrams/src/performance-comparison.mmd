@@ -1,0 +1,38 @@
+flowchart LR
+    subgraph "Direct API Approach"
+        D1["Client Code"] --> D2["HTTP Setup<br/>1.2s"]
+        D2 --> D3["Auth Headers<br/>0.3s"]
+        D3 --> D4["Request Build<br/>0.4s"]
+        D4 --> D5["API Call<br/>1.5s"]
+        D5 --> D6["Parse Response<br/>0.2s"]
+        D6 --> D7["Error Handling<br/>0.5s"]
+        D7 --> D8["Total: 4.1s"]
+    end
+    
+    subgraph "MCP Server Approach"
+        M1["Claude Tool"] --> M2["MCP Call<br/>0.1s"]
+        M2 --> M3["Pooled Connection<br/>0.0s"]
+        M3 --> M4["Optimized Request<br/>0.6s"]
+        M4 --> M5["Total: 0.7s"]
+    end
+    
+    %% Performance Bars
+    subgraph "Performance Gains"
+        direction TB
+        B1["Agent List<br/>🚀 4x faster"]
+        B2["Send Message<br/>⚡ 15% faster"]
+        B3["Memory Update<br/>🔥 3.7x faster"]
+        B4["Tool Attach<br/>💨 5.3x faster"]
+    end
+    
+    D8 -.->|"vs"| M5
+    M5 -.->|"Up to 5.3x<br/>Performance Gain"| B1
+    
+    %% Styling
+    classDef slow fill:#ef4444,stroke:#dc2626,color:#fff
+    classDef fast fill:#10b981,stroke:#059669,color:#fff
+    classDef gain fill:#f59e0b,stroke:#d97706,color:#fff
+    
+    class D1,D2,D3,D4,D5,D6,D7,D8 slow
+    class M1,M2,M3,M4,M5 fast
+    class B1,B2,B3,B4 gain

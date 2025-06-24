@@ -284,6 +284,56 @@ curl -X POST http://localhost:3000/mcp/agents \
 - Link to related documentation
 - Keep examples up-to-date
 
+### Technical Diagrams
+
+We use Mermaid for all technical diagrams to ensure consistency and maintainability.
+
+**Creating/Updating Diagrams:**
+
+1. **Edit Source Files**: Modify `.mmd` files in `diagrams/src/`
+   ```mermaid
+   flowchart LR
+       A[Start] --> B{Decision}
+       B -->|Yes| C[Success]
+       B -->|No| D[Try Again]
+   ```
+
+2. **Follow Style Guide**:
+   - Primary color: `#2563eb` (Claude/MCP elements)
+   - Secondary color: `#10b981` (Letta.ai elements)
+   - Accent color: `#f59e0b` (highlights/performance)
+   - Error color: `#ef4444` (error states)
+
+3. **Generate Output Files**:
+   ```bash
+   cd letta-mcp-server-enhanced
+   python scripts/generate-diagrams.py
+   ```
+
+4. **Verify Output**:
+   - Check SVG files render correctly
+   - Ensure PNG files are high-quality (2x DPI)
+   - Keep file sizes under 500KB
+
+5. **Update Documentation**:
+   - Add new diagrams to `docs/diagrams.md`
+   - Update README with diagram references
+   - Include alt text for accessibility
+
+**Diagram Types We Use:**
+- **Flowcharts**: Installation flows, process diagrams
+- **Sequence Diagrams**: API interactions, memory operations
+- **State Diagrams**: Error handling, state machines
+- **Mind Maps**: Tool catalogs, feature overviews
+- **Architecture Diagrams**: System components, data flow
+
+**Best Practices:**
+- Keep diagrams focused on a single concept
+- Use clear, concise labels
+- Test on both light and dark backgrounds
+- Consider mobile device rendering
+- Always commit both source (.mmd) and output files
+
 ## 🤝 Community Guidelines
 
 ### Code of Conduct

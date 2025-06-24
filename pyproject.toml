@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=77.0.3", "setuptools-scm>=8"]
+requires = ["setuptools>=77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "letta-mcp-server"
-dynamic = ["version"]
+version = "1.0.2"
 description = "The FIRST production-ready MCP server bridging Claude and Letta.ai agents"
 readme = "README.md"
 license = "MIT"
@@ -81,8 +81,6 @@ package-dir = {"" = "src"}
 [tool.setuptools.packages.find]
 where = ["src"]
 
-[tool.setuptools_scm]
-version_file = "src/letta_mcp/_version.py"
 
 [tool.black]
 line-length = 100
