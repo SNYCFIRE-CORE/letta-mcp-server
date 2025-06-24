@@ -1,0 +1,25 @@
+flowchart TB
+    subgraph "Traditional Approach"
+        T1["Send Request"] --> T2["Wait..."]
+        T2 --> T3["Wait..."]
+        T3 --> T4["Complete Response<br/>(3-5 seconds)"]
+    end
+    
+    subgraph "MCP Streaming"
+        S1["Send Request"] --> S2["First Token<br/>(0.3s)"]
+        S2 --> S3["Stream Tokens"]
+        S3 --> S4["Stream Tokens"]
+        S4 --> S5["Complete<br/>(Same total time)"]
+    end
+    
+    T4 -.->|"User waits<br/>3-5 seconds"| UX1["😴 Poor UX"]
+    S2 -.->|"Instant feedback<br/>0.3 seconds"| UX2["😊 Great UX"]
+    
+    %% Styling
+    classDef waiting fill:#ef4444,stroke:#dc2626,color:#fff
+    classDef streaming fill:#10b981,stroke:#059669,color:#fff
+    classDef ux fill:#f59e0b,stroke:#d97706,color:#fff
+    
+    class T1,T2,T3,T4 waiting
+    class S1,S2,S3,S4,S5 streaming
+    class UX1,UX2 ux

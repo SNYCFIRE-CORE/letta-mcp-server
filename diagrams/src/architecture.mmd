@@ -1,0 +1,47 @@
+flowchart TB
+    subgraph "Claude Ecosystem"
+        CD["Claude Desktop<br/>Claude Code"]
+        CD -->|"MCP Protocol<br/>(stdio)"| MP["MCP Layer"]
+    end
+    
+    subgraph "Letta MCP Server"
+        MP --> LS["Letta MCP Server<br/>v1.0.2"]
+        LS --> CP["Connection Pool<br/>(10 clients)"]
+        LS --> EH["Error Handler<br/>(Auto-retry)"]
+        LS --> ST["Streaming<br/>(Real-time)"]
+    end
+    
+    subgraph "Letta.ai Platform"
+        CP --> LA["Letta.ai API"]
+        EH --> LA
+        ST --> LA
+        LA --> AG["Agent Registry"]
+        LA --> MM["Memory Store"]
+        LA --> TM["Tool Manager"]
+    end
+    
+    subgraph "Your Agents"
+        AG --> A1["Agent 1<br/>Customer Service"]
+        AG --> A2["Agent 2<br/>Data Analysis"]
+        AG --> A3["Agent 3<br/>Custom Tools"]
+        MM <--> A1
+        MM <--> A2
+        MM <--> A3
+        TM <--> A1
+        TM <--> A2
+        TM <--> A3
+    end
+    
+    %% Styling
+    classDef claudeStyle fill:#2563eb,stroke:#1e40af,color:#fff,stroke-width:3px
+    classDef lettaStyle fill:#10b981,stroke:#059669,color:#fff,stroke-width:3px
+    classDef serverStyle fill:#f59e0b,stroke:#d97706,color:#fff,stroke-width:3px
+    classDef agentStyle fill:#8b5cf6,stroke:#7c3aed,color:#fff,stroke-width:2px
+    
+    class CD,MP claudeStyle
+    class LS,CP,EH,ST serverStyle
+    class LA,AG,MM,TM lettaStyle
+    class A1,A2,A3 agentStyle
+    
+    %% Performance annotation
+    LS -.->|"4x Faster<br/>Than Direct API"| LA

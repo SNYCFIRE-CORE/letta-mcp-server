@@ -1,0 +1,17 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 GitHub Discussions
+    url: https://github.com/SNYCFIRE-CORE/letta-mcp-server/discussions
+    about: Ask questions, share ideas, and discuss with the community
+  - name: 📚 Documentation
+    url: https://github.com/SNYCFIRE-CORE/letta-mcp-server/blob/main/README.md
+    about: Check our comprehensive documentation and examples
+  - name: 🔒 Security Issues
+    url: https://github.com/SNYCFIRE-CORE/letta-mcp-server/security/advisories/new
+    about: Report security vulnerabilities privately
+  - name: 🌐 Letta.ai Support
+    url: https://docs.letta.com
+    about: Get help with Letta.ai platform issues
+  - name: 💁 Claude Support
+    url: https://support.anthropic.com
+    about: Get help with Claude and MCP setup

@@ -1,0 +1,55 @@
+sequenceDiagram
+    participant U as User
+    participant C as Claude
+    participant MCP as MCP Server
+    participant API as Letta API
+    participant A as Agent
+    participant M as Memory Store
+    
+    %% Create Memory Block
+    U->>C: "Remember project context"
+    C->>MCP: letta_create_memory_block
+    MCP->>API: POST /agents/{id}/memory
+    API->>M: Create Block
+    M-->>API: Block ID
+    API-->>MCP: Success
+    MCP-->>C: Memory Created
+    C-->>U: ✅ Stored
+    
+    %% Update Memory
+    U->>C: "Update Q4 goals"
+    C->>MCP: letta_update_memory
+    MCP->>API: PATCH /memory/{block_id}
+    API->>M: Update Content
+    M->>A: Notify Change
+    A-->>M: Acknowledged
+    M-->>API: Updated
+    API-->>MCP: Success
+    MCP-->>C: Memory Updated
+    C-->>U: ✅ Updated
+    
+    %% Search Memory
+    U->>C: "What were our goals?"
+    C->>MCP: letta_search_memory
+    MCP->>API: GET /memory/search
+    API->>M: Vector Search
+    M-->>API: Relevant Blocks
+    API-->>MCP: Results
+    MCP-->>C: Memory Found
+    C-->>U: 📋 Q4 Goals: [details]
+    
+    %% Agent Uses Memory
+    U->>C: "Plan next sprint"
+    C->>MCP: letta_send_message
+    MCP->>API: POST /messages
+    API->>A: Process Message
+    A->>M: Retrieve Context
+    M-->>A: All Memory Blocks
+    A->>A: Generate Plan
+    A-->>API: Response
+    API-->>MCP: Agent Reply
+    MCP-->>C: Formatted Response
+    C-->>U: 📅 Sprint Plan
+    
+    Note over M: Persistent across<br/>all sessions
+    Note over A: Stateful with<br/>full context

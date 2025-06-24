@@ -1,0 +1,39 @@
+stateDiagram-v2
+    [*] --> Request: MCP Tool Call
+    Request --> Validation: Parse Input
+    
+    Validation --> APICall: Valid
+    Validation --> InvalidError: Invalid Input
+    
+    APICall --> Success: 200 OK
+    APICall --> RateLimit: 429 Error
+    APICall --> ServerError: 500 Error
+    APICall --> NetworkError: Connection Failed
+    
+    RateLimit --> Backoff: Exponential Backoff
+    ServerError --> Retry: Auto Retry (3x)
+    NetworkError --> Retry
+    
+    Backoff --> APICall: Wait Complete
+    Retry --> APICall: Attempt < 3
+    Retry --> FailureLog: Max Retries
+    
+    Success --> ResponseCache: Cache Result
+    ResponseCache --> FormatOutput: Format for Claude
+    FormatOutput --> [*]: Return to User
+    
+    InvalidError --> UserError: Clear Message
+    FailureLog --> UserError: Actionable Error
+    UserError --> [*]: Return Error
+    
+    note right of Backoff
+        Intelligent retry with
+        exponential backoff:
+        1s → 2s → 4s
+    end note
+    
+    note right of ResponseCache
+        Connection pooling
+        prevents repeated
+        setup overhead
+    end note
