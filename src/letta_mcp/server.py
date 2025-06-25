@@ -112,7 +112,8 @@ Remember: Letta agents maintain their own conversation history!
                 offset: Offset for pagination
             
             Returns:
-                List of agents with their details
+                List of agent summaries (id, name, description, tool_count, created_at, model)
+                to stay within token limits. Use letta_get_agent for full details.
             """
             try:
                 params = {"limit": min(limit, 100), "offset": offset}
@@ -130,11 +131,23 @@ Remember: Letta agents maintain their own conversation history!
                            filter_lower in a.get("description", "").lower()
                     ]
                 
+                # Return summarized agents to stay under token limit
+                summarized_agents = []
+                for agent in agents:
+                    summarized_agents.append({
+                        "id": agent.get("id"),
+                        "name": agent.get("name"),
+                        "description": agent.get("description"),
+                        "tool_count": len(agent.get("tools", [])),
+                        "created_at": agent.get("created_at"),
+                        "model": agent.get("model", "")
+                    })
+                
                 return {
                     "success": True,
-                    "count": len(agents),
+                    "count": len(summarized_agents),
                     "total": response.headers.get("X-Total-Count", len(agents)),
-                    "agents": agents
+                    "agents": summarized_agents
                 }
                 
             except httpx.HTTPError as e:
@@ -461,7 +474,7 @@ Remember: Letta agents maintain their own conversation history!
         @self.mcp.tool()
         async def letta_get_conversation_history(
             agent_id: str,
-            limit: int = 20,
+            limit: int = 10,
             before: Optional[str] = None
         ) -> Dict[str, Any]:
             """
@@ -469,11 +482,11 @@ Remember: Letta agents maintain their own conversation history!
             
             Args:
                 agent_id: ID of the agent
-                limit: Number of messages to retrieve
+                limit: Number of messages to retrieve (default: 10 to stay within token limits)
                 before: Get messages before this timestamp
             
             Returns:
-                Conversation history with messages
+                Conversation history with messages. Limited to prevent token overflow.
             """
             try:
                 validate_agent_id(agent_id)
@@ -536,13 +549,14 @@ Remember: Letta agents maintain their own conversation history!
                 include_tools: Whether to include tool calls
             
             Returns:
-                Exported conversation content
+                Exported conversation content (limited to prevent token overflow).
+                WARNING: Large conversations may be truncated to stay within token limits.
             """
             try:
-                # Get full conversation history
+                # Get conversation history (limited to prevent token overflow)
                 history_result = await letta_get_conversation_history(
                     agent_id, 
-                    limit=1000
+                    limit=100  # Reduced from 1000 to stay within token limits
                 )
                 
                 if not history_result["success"]:
@@ -811,7 +825,8 @@ Remember: Letta agents maintain their own conversation history!
                 tags: Filter by tool tags
             
             Returns:
-                List of available tools
+                List of tool summaries (id, name, description, tags) to stay within token limits.
+                Descriptions are truncated to 200 characters.
             """
             try:
                 response = await self.client.get("/v1/tools")
@@ -846,11 +861,21 @@ Remember: Letta agents maintain their own conversation history!
                             "id": tool.get("id")
                         })
                 
+                # Return tool summaries to stay under token limit
+                tool_summaries = []
+                for tool in tools:
+                    tool_summaries.append({
+                        "id": tool.get("id"),
+                        "name": tool.get("name"),
+                        "description": tool.get("description", "")[:200],  # Truncate long descriptions
+                        "tags": tool.get("tags", [])
+                    })
+                
                 return {
                     "success": True,
                     "total_tools": len(tools),
                     "tools_by_tag": tools_by_tag,
-                    "tools": tools
+                    "tools": tool_summaries
                 }
                 
             except Exception as e:
@@ -1119,5 +1144,9 @@ def run_server(config: Optional[LettaConfig] = None, transport: str = "stdio"):
     server = create_server(config)
     server.run(transport)
 
-if __name__ == "__main__":
+def main():
+    """Entry point for the letta-mcp-server command"""
     run_server()
+
+if __name__ == "__main__":
+    main()
