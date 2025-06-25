@@ -170,12 +170,12 @@ letta_create_agent(
 "Use letta_send_message to review this PR against our coding standards"
 ```
 
-### Advanced Examples
+### Examples
 
 See our [examples directory](examples/) for working code samples:
 - [Quickstart guide](examples/01_quickstart.py) - Complete setup and basic usage
-- [Multi-client setup](examples/02_multi_client.py) - Configure multiple AI clients
-- [Enterprise workflows](examples/03_enterprise.py) - Team-based agent management
+- [Basic usage](examples/02_basic_usage.py) - Simple configuration and testing
+- [Setup testing](examples/03_testing.py) - Verify your installation works
 
 ## 🔧 Configuration
 
