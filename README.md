@@ -8,8 +8,6 @@
 
 Bridge Claude and Letta.ai agents with one line of code.
 
-![Letta MCP Demo](docs/assets/demo.gif)
-
 ## 🚀 Why This Matters
 
 **The Problem**: AI ecosystems are disconnected. Claude can't talk to your Letta agents. Your agents can't leverage Claude's capabilities. Manual API integration is tedious and error-prone.
@@ -118,11 +116,8 @@ value: "Q4 goals: Launch v2.0, expand to Europe"
 
 ### Advanced Examples
 
-See our [examples directory](examples/) for:
-- [Multi-agent orchestration](examples/multi_agent.py)
-- [Memory-driven workflows](examples/memory_workflows.py)
-- [Tool composition patterns](examples/tool_patterns.py)
-- [Streaming chat applications](examples/streaming_chat.py)
+See our [examples directory](examples/) for working code samples:
+- [Quickstart guide](examples/01_quickstart.py) - Complete setup and basic usage
 
 ## 🔧 Configuration
 
