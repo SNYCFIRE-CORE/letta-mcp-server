@@ -4,16 +4,16 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "letta-mcp-server"
-version = "1.0.3"
+version = "1.0.4"
 description = "The FIRST production-ready MCP server bridging Claude and Letta.ai agents"
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [
-    {name = "SNYCFIRE-CORE", email = "support@letta-mcp.dev"},
+    {name = "SNYCFIRE-CORE", email = "Zack@ascendhq.gg"},
 ]
 maintainers = [
-    {name = "SNYCFIRE-CORE", email = "support@letta-mcp.dev"},
+    {name = "SNYCFIRE-CORE", email = "Zack@ascendhq.gg"},
 ]
 classifiers = [
     "Development Status :: 4 - Beta",

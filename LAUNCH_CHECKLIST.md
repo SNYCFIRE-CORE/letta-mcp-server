@@ -136,7 +136,7 @@
 ## Emergency Contacts
 
 - **Critical Bugs**: Create hotfix branch
-- **Security Issues**: security@letta-mcp.dev
+- **Security Issues**: Zack@ascendhq.gg
 - **PR Support**: [PR agency if applicable]
 - **Legal**: [Legal contact if needed]
 

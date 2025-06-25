@@ -183,11 +183,28 @@ letta-mcp --help
 - **Validation**: Validate all inputs thoroughly
 - **Transport**: Use HTTPS/TLS for all communications
 
+### PyPI Release Security
+- **NEVER** commit PyPI tokens to any file
+- **ALWAYS** use environment variables for credentials
+- **AUDIT** every release: `./scripts/secure-upload.sh audit`
+- **TEST** on TestPyPI first before production release
+- **VERIFY** distribution contents don't contain secrets:
+  ```bash
+  tar -tzf dist/*.tar.gz | grep -E "(\.env|\.pypirc|token|secret)"
+  ```
+- **USE** the secure upload script: `./scripts/secure-upload.sh release`
+- **FOLLOW** the SECURE_PYPI_UPLOAD_GUIDE in mem0
+
 ### Reporting Security Issues
 - **Email**: security@snycfire.com
 - **Do NOT** create public GitHub issues
 - **Include**: Detailed reproduction steps
 - **Response**: We'll respond within 24 hours
+- **Token Exposure**: If a PyPI token is exposed, immediately:
+  1. Revoke at https://pypi.org/manage/account/#api-tokens
+  2. Generate new token
+  3. Notify maintainers
+  4. Audit all files for exposure
 
 ## 🎯 Performance Guidelines
 

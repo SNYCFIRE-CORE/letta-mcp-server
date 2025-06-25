@@ -19,6 +19,11 @@ recursive-include tests *.py *.yml *.yaml *.json *.txt
 # Include scripts
 recursive-include scripts *.py
 
+# Include diagrams
+include diagrams/output/*.svg
+include diagrams/output/*.png
+include diagrams/src/*.mmd
+
 # Include configuration files
 include pyproject.toml
 include .git_archival.txt
