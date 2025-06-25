@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "letta-mcp-server"
 version = "1.0.5"
-description = "Production-ready MCP server bridging Claude and Letta.ai agents"
+description = "Universal MCP server connecting any AI client to Letta.ai's stateful agents"
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
@@ -30,13 +30,20 @@ classifiers = [
 keywords = [
     "letta",
     "mcp",
-    "claude",
+    "model-context-protocol",
     "ai",
     "agents",
     "llm",
-    "model-context-protocol",
+    "github-copilot",
+    "cursor",
+    "replit",
+    "sourcegraph",
+    "claude",
+    "openai",
     "fastmcp",
     "memgpt",
+    "universal",
+    "interoperability",
 ]
 requires-python = ">=3.10"
 dependencies = [

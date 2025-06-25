@@ -1,7 +1,20 @@
 flowchart TB
-    subgraph "Claude Ecosystem"
-        CD["Claude Desktop<br/>Claude Code"]
-        CD -->|"MCP Protocol<br/>(stdio)"| MP["MCP Layer"]
+    subgraph "Universal MCP Clients"
+        CD["Claude Desktop"]
+        GH["GitHub Copilot<br/>(VS Code)"]
+        CU["Cursor"]
+        RP["Replit"]
+        SC["Sourcegraph Cody"]
+        OA["OpenAI ChatGPT"]
+        OT["Any MCP Client"]
+        
+        CD -->|"MCP Protocol<br/>(JSON-RPC 2.0)"| MP["MCP Layer"]
+        GH -->|"MCP Protocol<br/>(JSON-RPC 2.0)"| MP
+        CU -->|"MCP Protocol<br/>(JSON-RPC 2.0)"| MP
+        RP -->|"MCP Protocol<br/>(JSON-RPC 2.0)"| MP
+        SC -->|"MCP Protocol<br/>(JSON-RPC 2.0)"| MP
+        OA -->|"MCP Protocol<br/>(JSON-RPC 2.0)"| MP
+        OT -->|"MCP Protocol<br/>(JSON-RPC 2.0)"| MP
     end
     
     subgraph "Letta MCP Server"
@@ -33,12 +46,14 @@ flowchart TB
     end
     
     %% Styling
-    classDef claudeStyle fill:#2563eb,stroke:#1e40af,color:#fff,stroke-width:3px
+    classDef clientStyle fill:#2563eb,stroke:#1e40af,color:#fff,stroke-width:2px
+    classDef protocolStyle fill:#6366f1,stroke:#4f46e5,color:#fff,stroke-width:3px
     classDef lettaStyle fill:#10b981,stroke:#059669,color:#fff,stroke-width:3px
     classDef serverStyle fill:#f59e0b,stroke:#d97706,color:#fff,stroke-width:3px
     classDef agentStyle fill:#8b5cf6,stroke:#7c3aed,color:#fff,stroke-width:2px
     
-    class CD,MP claudeStyle
+    class CD,GH,CU,RP,SC,OA,OT clientStyle
+    class MP protocolStyle
     class LS,CP,EH,ST serverStyle
     class LA,AG,MM,TM lettaStyle
     class A1,A2,A3 agentStyle

@@ -39,7 +39,10 @@ class LettaMCPServer:
         self.mcp = FastMCP(
             "Letta MCP Server",
             instructions="""
-This server provides seamless integration between Claude and Letta.ai agents.
+Universal MCP server providing seamless integration between any AI client and Letta.ai agents.
+
+Supports all MCP-compatible clients:
+- Claude Desktop, GitHub Copilot, Cursor, Replit, Sourcegraph Cody, OpenAI ChatGPT, and more
 
 Key features:
 - Stateful agent conversations (no need to send history)
@@ -48,7 +51,7 @@ Key features:
 - Real-time streaming responses
 - Cross-agent communication
 
-Remember: Letta agents maintain their own conversation history!
+Remember: Letta agents maintain their own conversation history across all clients!
 """
         )
         

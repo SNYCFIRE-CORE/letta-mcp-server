@@ -70,7 +70,8 @@ def find_claude_config() -> Optional[Path]:
 
 def cmd_configure(args):
     """Configure Letta MCP Server"""
-    print(f"🔧 Configuring Letta MCP Server v{__version__}")
+    print(f"🌐 Configuring Universal Letta MCP Server v{__version__}")
+    print("Works with Claude Desktop, GitHub Copilot, Cursor, Replit, and more!")
     print()
     
     # Create default config
@@ -92,7 +93,8 @@ def cmd_configure(args):
             print("❌ Failed to update Claude configuration")
     else:
         print("\n⚠️  Could not find Claude configuration file")
-        print("Please add the following to your Claude config manually:")
+        print("For Claude Desktop, add the following to your config manually:")
+        print("For other MCP clients, use similar configuration patterns.")
         print("""
 {
   "mcpServers": {
@@ -108,8 +110,9 @@ def cmd_configure(args):
 """)
 
 def cmd_run(args):
-    """Run the Letta MCP Server"""
-    print(f"🚀 Starting Letta MCP Server v{__version__}")
+    """Run the Universal Letta MCP Server"""
+    print(f"🌐 Starting Universal Letta MCP Server v{__version__}")
+    print("Compatible with Claude Desktop, GitHub Copilot, Cursor, Replit, and all MCP clients")
     
     try:
         config = load_config()

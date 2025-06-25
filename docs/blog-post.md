@@ -1,25 +1,34 @@
-# Bridging Two Worlds: Claude Meets Letta.ai Through MCP
+# Universal AI Agent Connectivity: Letta.ai Meets the MCP Ecosystem
 
-*How we built an open-source bridge to connect Claude's interface with Letta's stateful agents*
+*How we built the first production-ready MCP server to connect any AI client with Letta's stateful agents*
 
 ---
 
-## The Problem: Disconnected AI Ecosystems
+## The Problem: Fragmented AI Ecosystems
 
-Picture this: You're using Claude for its excellent interface and reasoning capabilities, but your production AI agents live in Letta.ai, benefiting from persistent memory and stateful conversations. Every time you need to interact with your agents, you're jumping between platforms, copying context, and losing the flow of your work.
+Picture this: You're using your favorite AI client—whether it's Claude Desktop, GitHub Copilot, Cursor, or Replit—but your production AI agents live in Letta.ai, benefiting from persistent memory and stateful conversations. Every time you need to interact with your agents, you're jumping between platforms, copying context, and losing the flow of your work.
 
-This fragmentation isn't just inconvenient—it's holding back the potential of AI-powered workflows. What if Claude could directly orchestrate your Letta agents? What if your agents could leverage Claude's capabilities while maintaining their own state and memory?
+This fragmentation isn't just inconvenient—it's holding back the potential of AI-powered workflows. What if **any AI client** could directly orchestrate your Letta agents? What if your agents could leverage multiple platforms while maintaining their own state and memory?
 
-That's exactly what we set out to solve.
+That's exactly what we set out to solve with the Model Context Protocol (MCP) standard.
 
-## The Solution: Letta MCP Server
+## The Solution: Universal Letta MCP Server
 
-Today, we're excited to open-source the Letta MCP Server—a bridge that seamlessly connects Claude with Letta.ai agents through the Model Context Protocol (MCP). With one line of configuration, Claude gains the ability to:
+Today, we're excited to open-source the **first production-ready** Letta MCP Server—a universal bridge that connects **any MCP-compatible AI client** with Letta.ai agents. With one line of configuration, multiple platforms gain the ability to:
 
-- 💬 **Chat directly with Letta agents** - No more context switching
-- 🧠 **Manage persistent memory** - Update agent knowledge in real-time
-- 🛠️ **Orchestrate tools** - Coordinate capabilities across platforms
-- 📊 **Track conversations** - Export and analyze agent interactions
+- 💬 **Chat directly with Letta agents** - From Claude, GitHub Copilot, Cursor, and more
+- 🧠 **Manage persistent memory** - Update agent knowledge in real-time across clients
+- 🛠️ **Orchestrate tools** - Coordinate capabilities across the entire ecosystem  
+- 📊 **Track conversations** - Export and analyze agent interactions universally
+
+**Supported Clients:**
+- **Claude Desktop** - Interactive agent conversations
+- **GitHub Copilot** - Code-aware agent assistance in VS Code
+- **Cursor** - AI-powered development with stateful context
+- **Replit** - Cloud development with persistent agents
+- **Sourcegraph Cody** - Enterprise code intelligence with agents
+- **OpenAI ChatGPT** - Conversational AI workflows
+- **Any MCP-compatible client** - Future-proof integration
 
 ## Why This Matters
 

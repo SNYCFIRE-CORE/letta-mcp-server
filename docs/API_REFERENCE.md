@@ -1,6 +1,6 @@
-# Letta MCP Server API Reference
+# Universal Letta MCP Server API Reference
 
-This document provides a comprehensive reference for all API endpoints and operations available through the Letta MCP Server, including agent management, memory operations, tool management, and conversation handling.
+This document provides a comprehensive reference for all API endpoints and operations available through the Universal Letta MCP Server. Works with **any MCP-compatible client** including Claude Desktop, GitHub Copilot, Cursor, Replit, Sourcegraph Cody, OpenAI ChatGPT, and more.
 
 ## Table of Contents
 
