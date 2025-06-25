@@ -128,7 +128,7 @@ We propose:
 ## Contact
 
 **Project Lead**: SNYCFIRE-CORE  
-**Email**: support@letta-mcp.dev  
+**Email**: Zack@ascendhq.gg  
 **GitHub**: [SNYCFIRE-CORE/letta-mcp-server](https://github.com/SNYCFIRE-CORE/letta-mcp-server)
 
 ---

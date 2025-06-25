@@ -96,7 +96,7 @@ Available commands:
    ```bash
    # Set environment variables
    export TWINE_USERNAME=__token__
-   export TWINE_PASSWORD=pypi-AgEIcHlwaS5vcmcCJDJhMDI0MTJiLTcxYzYtNDM4Mi1hOTM2LWVkNTEyZDgxMzQzNwACKlszLCJlMTExZTQ0My05MDFiLTRiYWYtOGQ5My00YmRhZjQ4ZDE1ZGIiXQAABiCKJzLnxLPjOha-AyX_Nv_QUAFkHV70SRDRL9Ymz2btyA
+   export TWINE_PASSWORD=pypi-YOUR-TOKEN-HERE
    
    # Upload to production PyPI
    twine upload dist/*

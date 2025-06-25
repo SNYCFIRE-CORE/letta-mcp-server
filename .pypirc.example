@@ -1,0 +1,25 @@
+# Example .pypirc configuration file
+# Copy this to ~/.pypirc and add your API tokens
+# NEVER commit the actual .pypirc file to version control!
+
+[distutils]
+index-servers =
+    pypi
+    testpypi
+
+[pypi]
+repository = https://upload.pypi.org/legacy/
+username = __token__
+password = # Add your PyPI API token here (starts with pypi-)
+
+[testpypi]
+repository = https://test.pypi.org/legacy/
+username = __token__
+password = # Add your TestPyPI API token here (starts with pypi-)
+
+# Security Best Practices:
+# 1. Set file permissions: chmod 600 ~/.pypirc
+# 2. Use API tokens, not passwords
+# 3. Generate separate tokens for PyPI and TestPyPI
+# 4. Revoke tokens immediately if exposed
+# 5. Consider using keyring instead for better security

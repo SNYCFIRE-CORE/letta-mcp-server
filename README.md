@@ -212,8 +212,8 @@ Quick contribution ideas:
 
 - [Letta.ai Documentation](https://docs.letta.com)
 - [MCP Specification](https://modelcontextprotocol.io)
-- [API Reference](docs/api-reference.md)
-- [Troubleshooting Guide](docs/troubleshooting.md)
+- [API Reference](docs/API_REFERENCE.md)
+- [Troubleshooting Guide](docs/TROUBLESHOOTING.md)
 - [Discord Community](https://discord.gg/letta)
 
 ## 📜 License
