@@ -59,7 +59,7 @@ class TestRealAPIConnection:
     @pytest.mark.asyncio
     async def test_get_axle_agent(self, real_client):
         """Test getting the specific AXLE agent"""
-        agent_id = "agent-01c2ef52-be32-401d-8d8f-edc561b39cbe"
+        agent_id = "agent-your-agent-id-here"
         
         result = await real_client.call_tool("letta_get_agent", {"agent_id": agent_id})
         
@@ -75,7 +75,7 @@ class TestRealAPIConnection:
     @pytest.mark.asyncio
     async def test_get_axle_memory(self, real_client):
         """Test getting AXLE agent memory"""
-        agent_id = "agent-01c2ef52-be32-401d-8d8f-edc561b39cbe"
+        agent_id = "agent-your-agent-id-here"
         
         result = await real_client.call_tool("letta_get_memory", {"agent_id": agent_id})
         
@@ -109,7 +109,7 @@ class TestRealAPIConnection:
     @pytest.mark.asyncio
     async def test_get_axle_tools(self, real_client):
         """Test getting tools attached to AXLE agent"""
-        agent_id = "agent-01c2ef52-be32-401d-8d8f-edc561b39cbe"
+        agent_id = "agent-your-agent-id-here"
         
         result = await real_client.call_tool("letta_get_agent_tools", {"agent_id": agent_id})
         
@@ -133,7 +133,7 @@ class TestRealAPIMessaging:
     @pytest.mark.asyncio
     async def test_send_simple_message_to_axle(self, real_client):
         """Test sending a simple message to AXLE agent"""
-        agent_id = "agent-01c2ef52-be32-401d-8d8f-edc561b39cbe"
+        agent_id = "agent-your-agent-id-here"
         
         result = await real_client.call_tool("letta_send_message", {
             "agent_id": agent_id,
@@ -154,7 +154,7 @@ class TestRealAPIMessaging:
     @pytest.mark.asyncio
     async def test_conversation_history(self, real_client):
         """Test getting conversation history"""
-        agent_id = "agent-01c2ef52-be32-401d-8d8f-edc561b39cbe"
+        agent_id = "agent-your-agent-id-here"
         
         result = await real_client.call_tool("letta_get_conversation_history", {
             "agent_id": agent_id,
@@ -173,7 +173,7 @@ class TestRealAPIMessaging:
     @pytest.mark.asyncio
     async def test_search_memory(self, real_client):
         """Test searching through agent memory"""
-        agent_id = "agent-01c2ef52-be32-401d-8d8f-edc561b39cbe"
+        agent_id = "agent-your-agent-id-here"
         
         result = await real_client.call_tool("letta_search_memory", {
             "agent_id": agent_id,
@@ -261,7 +261,7 @@ class TestRealAPIPerformance:
     @pytest.mark.asyncio
     async def test_concurrent_requests(self, real_client):
         """Test handling of concurrent requests"""
-        agent_id = "agent-01c2ef52-be32-401d-8d8f-edc561b39cbe"
+        agent_id = "agent-your-agent-id-here"
         
         # Create multiple concurrent requests
         tasks = [
@@ -328,7 +328,7 @@ class TestRealAPIResources:
     @pytest.mark.asyncio
     async def test_agent_specific_resource(self, real_client):
         """Test agent-specific resources"""
-        agent_id = "agent-01c2ef52-be32-401d-8d8f-edc561b39cbe"
+        agent_id = "agent-your-agent-id-here"
         
         # Test agent info resource
         agent_uri = f"letta://agent/{agent_id}"

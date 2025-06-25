@@ -225,7 +225,7 @@ class TestValidateAgentId:
     def test_valid_agent_ids(self):
         """Test valid agent ID formats"""
         valid_ids = [
-            "agent-01c2ef52-be32-401d-8d8f-edc561b39cbe",
+            "agent-your-agent-id-here",
             "agent-12345678-1234-1234-1234-123456789abc",
             "ag-123e4567-e89b-12d3-a456-426614174000"
         ]
@@ -452,7 +452,7 @@ class TestUtilityIntegration:
     def test_agent_id_validation_with_real_formats(self):
         """Test agent ID validation with real-world formats"""
         # Test with the actual AXLE agent ID
-        real_agent_id = "agent-01c2ef52-be32-401d-8d8f-edc561b39cbe"
+        real_agent_id = "agent-your-agent-id-here"
         validate_agent_id(real_agent_id)  # Should not raise
         
         # Test with various UUID formats

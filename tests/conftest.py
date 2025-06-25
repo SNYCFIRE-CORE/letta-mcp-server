@@ -15,8 +15,8 @@ from fastmcp import Client
 
 
 # Test configuration
-TEST_API_KEY = "sk-let-MTVhMWI3YmYtNWEzMi00NDQ5LWJiMzAtNTAwZTE5NGQ4N2FjOmEwZjc1NzQwLTU2NjAtNDI0Ny04YThkLTVlM2MyZDNhYjUyNA=="
-TEST_AGENT_ID = "agent-01c2ef52-be32-401d-8d8f-edc561b39cbe"
+TEST_API_KEY = "sk-let-your-api-key-here"
+TEST_AGENT_ID = "agent-your-agent-id-here"
 LETTA_BASE_URL = "https://api.letta.com"
 
 

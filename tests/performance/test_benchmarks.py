@@ -83,7 +83,7 @@ class TestResponseTimeBenchmarks:
     @pytest.mark.asyncio
     async def test_get_agent_response_time(self, real_client):
         """Benchmark get agent details response time"""
-        agent_id = "agent-01c2ef52-be32-401d-8d8f-edc561b39cbe"
+        agent_id = "agent-your-agent-id-here"
         times = []
         num_iterations = 5
         
@@ -109,7 +109,7 @@ class TestResponseTimeBenchmarks:
     @pytest.mark.asyncio
     async def test_memory_operations_response_time(self, real_client):
         """Benchmark memory operations response time"""
-        agent_id = "agent-01c2ef52-be32-401d-8d8f-edc561b39cbe"
+        agent_id = "agent-your-agent-id-here"
         
         # Test get memory
         start_time = time.perf_counter()
@@ -164,7 +164,7 @@ class TestThroughputBenchmarks:
     @pytest.mark.asyncio
     async def test_mixed_operation_throughput(self, real_client):
         """Benchmark throughput with mixed operations"""
-        agent_id = "agent-01c2ef52-be32-401d-8d8f-edc561b39cbe"
+        agent_id = "agent-your-agent-id-here"
         
         # Create mixed workload
         tasks = [

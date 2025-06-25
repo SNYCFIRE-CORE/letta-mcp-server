@@ -113,7 +113,7 @@ export RUN_PERFORMANCE_TESTS=1
 
 # Optional
 export LETTA_BASE_URL="https://api.letta.com"  # Default
-export TEST_AGENT_ID="agent-01c2ef52-be32-401d-8d8f-edc561b39cbe"  # AXLE agent
+export TEST_AGENT_ID="agent-your-agent-id-here"  # AXLE agent
 ```
 
 ### Test Parameters
@@ -218,7 +218,7 @@ assert improvement >= 3.0, f"Performance improvement insufficient: {improvement:
 
 2. **Agent Not Found**
    ```
-   Error: Agent agent-01c2ef52-be32-401d-8d8f-edc561b39cbe not found
+   Error: Agent agent-your-agent-id-here not found
    ```
    **Solution**: Update TEST_AGENT_ID to your agent ID
 

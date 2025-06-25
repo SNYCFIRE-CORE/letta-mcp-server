@@ -89,7 +89,7 @@ pytest tests/integration/ -v
 **Requirements**:
 - Valid `LETTA_API_KEY` environment variable
 - Network connectivity to `api.letta.com`
-- AXLE agent (`agent-01c2ef52-be32-401d-8d8f-edc561b39cbe`) accessible
+- AXLE agent (`agent-your-agent-id-here`) accessible
 
 ### End-to-End Tests (`tests/e2e/`)
 

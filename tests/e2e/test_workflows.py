@@ -106,7 +106,7 @@ class TestCompleteWorkflows:
         
         # Step 1: Check what tools AXLE has available
         tools_result = await mock_client.call_tool("letta_get_agent_tools", {
-            "agent_id": "agent-01c2ef52-be32-401d-8d8f-edc561b39cbe"
+            "agent_id": "agent-your-agent-id-here"
         })
         
         import json
@@ -116,7 +116,7 @@ class TestCompleteWorkflows:
         
         # Step 2: Request inventory analysis
         analysis_result = await mock_client.call_tool("letta_send_message", {
-            "agent_id": "agent-01c2ef52-be32-401d-8d8f-edc561b39cbe",
+            "agent_id": "agent-your-agent-id-here",
             "message": "I have 47 Ford F-150s that have been on the lot for over 90 days. Can you analyze what I should do?"
         })
         
@@ -126,7 +126,7 @@ class TestCompleteWorkflows:
         
         # Step 3: Check conversation history
         history_result = await mock_client.call_tool("letta_get_conversation_history", {
-            "agent_id": "agent-01c2ef52-be32-401d-8d8f-edc561b39cbe",
+            "agent_id": "agent-your-agent-id-here",
             "limit": 10
         })
         
@@ -152,7 +152,7 @@ class TestCompleteWorkflows:
         
         # Step 1: Get current memory state
         memory_result = await mock_client.call_tool("letta_get_memory", {
-            "agent_id": "agent-01c2ef52-be32-401d-8d8f-edc561b39cbe"
+            "agent_id": "agent-your-agent-id-here"
         })
         
         import json
@@ -163,7 +163,7 @@ class TestCompleteWorkflows:
         
         # Step 2: Update human memory with more specific info
         update_result = await mock_client.call_tool("letta_update_memory", {
-            "agent_id": "agent-01c2ef52-be32-401d-8d8f-edc561b39cbe",
+            "agent_id": "agent-your-agent-id-here",
             "block_label": "human",
             "value": "John Smith, owner of Smith Ford Dealership in Austin, TX. 20 years in automotive sales. Specializes in F-150s and commercial vehicles. Tech-forward and interested in AI automation."
         })
@@ -173,7 +173,7 @@ class TestCompleteWorkflows:
         
         # Step 3: Add custom memory block for dealership context
         custom_block_result = await mock_client.call_tool("letta_create_memory_block", {
-            "agent_id": "agent-01c2ef52-be32-401d-8d8f-edc561b39cbe",
+            "agent_id": "agent-your-agent-id-here",
             "label": "dealership_context",
             "value": "Smith Ford Dealership: 150 new vehicles, 75 used vehicles. Focus on commercial sales. Located in growing Austin market. Main competitors: Round Rock Ford, Covert Ford.",
             "description": "Specific dealership business context and competitive landscape"

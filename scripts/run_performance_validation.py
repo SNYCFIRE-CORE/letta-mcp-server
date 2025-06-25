@@ -146,7 +146,7 @@ All tests were executed against the production Letta API using the AXLE agent.
 
 ### Performance Methodology:
 
-- **Test Agent**: agent-01c2ef52-be32-401d-8d8f-edc561b39cbe (AXLE)
+- **Test Agent**: agent-your-agent-id-here (AXLE)
 - **API Endpoint**: https://api.letta.com
 - **Measurement**: Python time.perf_counter() for high precision
 - **Statistics**: Mean, median, standard deviation, min/max
