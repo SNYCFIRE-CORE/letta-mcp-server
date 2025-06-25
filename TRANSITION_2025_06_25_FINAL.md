@@ -8,6 +8,10 @@
 
 This document captures the complete state of the Letta MCP Server repository after implementing critical security improvements and documentation fixes for the v1.0.4 release. All Git Flow procedures have been followed, and the repository is ready for the final release steps.
 
+## 🚨 CRITICAL BLOCKER: MCP Server Not Working
+
+**URGENT**: The v1.0.4 production build is NOT WORKING when loaded in Claude. This must be fixed before proceeding with PyPI deployment or making the repository public. See `CRITICAL_MCP_ISSUE_2025_06_25.md` for details. The previous version at `/root/autodealai-letta/letta_mcp/letta_fastmcp_server.py` was working correctly.
+
 ## 📍 Current Repository State
 
 ### Branch Status

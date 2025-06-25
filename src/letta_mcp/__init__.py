@@ -9,7 +9,7 @@ except ImportError:
     __version__ = "0.0.0"
 
 __author__ = "SNYCFIRE-CORE"
-__email__ = "support@letta-mcp.dev"
+__email__ = "Zack@ascendhq.gg"
 
 from .server import LettaMCPServer, create_server, run_server
 from .config import LettaConfig, load_config
