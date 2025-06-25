@@ -22,6 +22,8 @@ Bridge Claude and Letta.ai agents with one line of code.
 
 ## ⚡ Quick Start (60 seconds)
 
+![Installation Flow](diagrams/output/installation-flow.svg)
+
 ### 1. Install
 ```bash
 pip install letta-mcp-server
@@ -160,21 +162,21 @@ features:
 
 ## 🏗️ Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Claude    │────▶│ MCP Server  │────▶│  Letta.ai   │
-│             │     │  (FastMCP)  │     │   Cloud     │
-└─────────────┘     └─────────────┘     └─────────────┘
-       │                    │                    │
-       │                    ▼                    │
-       │            ┌─────────────┐              │
-       └───────────▶│    Tools    │◀─────────────┘
-                    └─────────────┘
-```
+The Letta MCP Server acts as a bridge between Claude's MCP ecosystem and Letta's powerful agent platform:
+
+![Letta MCP Server Architecture](diagrams/output/architecture.svg)
+
+### Key Components:
+- **Connection Pooling**: Maintains 10 persistent connections for optimal performance
+- **Error Handling**: Automatic retry with exponential backoff for reliability
+- **Streaming Support**: Real-time response streaming for better user experience
+- **Tool Management**: Seamless orchestration of 30+ agent tools
 
 ## 🚀 Performance
 
 Benchmarked on typical developer workflows:
+
+![Performance Comparison](diagrams/output/performance-comparison.svg)
 
 | Operation | Direct API | MCP Server | Improvement |
 |-----------|------------|------------|-------------|
