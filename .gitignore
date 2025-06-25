@@ -80,28 +80,9 @@ Thumbs.db
 temp/
 tmp/
 
-# Internal development files (not for public release)
-*TRANSITION*.md
-*HANDOFF*.md
-*COMPACT*.md
-*CRITICAL*.md
-*CONTEXT*.md
-*ZACK*.md
-*SECURE_UPLOAD*.md
-*PYPI_RELEASE_GUIDE*.md
+# Development files
 *.backup
 *.bak
-research/
-social/
-direct_api_test.py
-simple_api_test.py
-local_validation.py
-validate_framework.py
-test_token_limits.py
-test_install/
-AGENT_*_*.md
-DIAGRAMS_IMPLEMENTATION_SUMMARY.md
-LAUNCH_CHECKLIST.md
-LAUNCH_TRANSITION*.md
-TEST_EXECUTION_GUIDE.md
-TOKEN_LIMIT_FIX_SUMMARY.md
+temp_*
+local_*
+test_*
