@@ -116,12 +116,12 @@ If not using Trusted Publishing:
    [testpypi]
    repository = https://test.pypi.org/legacy/
    username = __token__
-   password = pypi-...  # Your TestPyPI token
+   password = your-pypi-token-here  # Your TestPyPI token
 
    [pypi]
    repository = https://upload.pypi.org/legacy/
    username = __token__
-   password = pypi-...  # Your PyPI token
+   password = your-pypi-token-here  # Your PyPI token
    ```
 
 ## 🧪 Testing Strategy
