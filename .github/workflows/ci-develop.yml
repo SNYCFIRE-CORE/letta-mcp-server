@@ -83,7 +83,7 @@ jobs:
         pytest tests/integration/ -v -k "not real_api"
         
     - name: Upload coverage
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v5
       with:
         file: ./coverage.xml
         flags: unittests
