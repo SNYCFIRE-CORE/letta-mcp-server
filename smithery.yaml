@@ -1,0 +1,31 @@
+# Smithery configuration file: https://smithery.ai/docs/build/project-config
+
+startCommand:
+  type: stdio
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({
+      command: 'letta-mcp-server',
+      args: [],
+      env: {
+        LETTA_API_KEY: config.lettaApiKey,
+        LETTA_BASE_URL: config.baseUrl
+      }
+    })
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - lettaApiKey
+    properties:
+      lettaApiKey:
+        type: string
+        description: API key for Letta.ai
+      baseUrl:
+        type: string
+        default: https://api.letta.com
+        description: Base URL for Letta API
+  exampleConfig:
+    lettaApiKey: sk-let-abcdef123456
+    baseUrl: https://api.letta.com
