@@ -1,5 +1,6 @@
 # 🌐 Letta MCP Server
 
+[![smithery badge](https://smithery.ai/badge/@SNYCFIRE-CORE/letta-mcp-server)](https://smithery.ai/server/@SNYCFIRE-CORE/letta-mcp-server)
 [![PyPI](https://img.shields.io/pypi/v/letta-mcp-server)](https://pypi.org/project/letta-mcp-server/)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/SNYCFIRE-CORE/letta-mcp-server)](https://github.com/SNYCFIRE-CORE/letta-mcp-server)
@@ -23,6 +24,14 @@ Universal MCP server connecting any AI client to Letta.ai's powerful stateful ag
 ## ⚡ Quick Start (60 seconds)
 
 ![Installation Flow](diagrams/output/installation-flow.svg)
+
+### Installing via Smithery
+
+To install letta-mcp-server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@SNYCFIRE-CORE/letta-mcp-server):
+
+```bash
+npx -y @smithery/cli install @SNYCFIRE-CORE/letta-mcp-server --client claude
+```
 
 ### 1. Install
 ```bash
