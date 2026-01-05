@@ -41,7 +41,7 @@ jobs:
         pip-licenses --format=json --output-file=licenses.json
         
     - name: Upload security artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: security-reports
         path: |
